@@ -1,22 +1,12 @@
 
 default: &default
-  adapter: postgresql
-  encoding: unicode
+  secret_key_base: ca769b0d049946f9e56b15fae3e75aa2f3e391d5832594910ac7219a20faa9ea92c2822e33d406784114ee4c5ecda9b603b00d317a6353b94b44992567e86a8c
+  database: postgres://rails:a7QqzdpWNMD5j5f8Qujo2l3EilQTLrvw@dpg-ckt4i68168ec73d603d0-a.singapore-postgres.render.com/house_market_place_pj5w
   username: rails
-  password: rails
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  password: a7QqzdpWNMD5j5f8Qujo2l3EilQTLrvw
 
 development:
   <<: *default
-  database: HouseMarketplace_development
-
-test:
-  <<: *default
-  database: HouseMarketplace_test
-
 
 production:
   <<: *default
-  database: HouseMarketplace_production
-  username: HouseMarketplace
-  password: <%= ENV["HOUSEMARKETPLACE_DATABASE_PASSWORD"] %>

@@ -12,6 +12,4 @@ development:
 
 production:
   <<: *default
-  database: house_market_place_pj5w
-  username: rails
-  password: a7QqzdpWNMD5j5f8Qujo2l3EilQTLrvw
+  url: postgres://rails:a7QqzdpWNMD5j5f8Qujo2l3EilQTLrvw@dpg-ckt4i68168ec73d603d0-a/house_market_place_pj5w

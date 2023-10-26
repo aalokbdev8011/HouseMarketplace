@@ -18,7 +18,7 @@ class FavoritesController < ApplicationController
     end
   end
 
-  def delete
+  def destroy
     favorite = Favorite.find_by(id: params[:id])
     return unless favorite.destroy
 

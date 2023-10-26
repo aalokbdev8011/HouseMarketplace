@@ -1,0 +1,22 @@
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: rails
+  password: rails
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: HouseMarketplace_development
+
+test:
+  <<: *default
+  database: HouseMarketplace_test
+
+
+production:
+  <<: *default
+  database: HouseMarketplace_production
+  username: HouseMarketplace
+  password: <%= ENV["HOUSEMARKETPLACE_DATABASE_PASSWORD"] %>

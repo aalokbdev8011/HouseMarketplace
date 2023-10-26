@@ -1,0 +1,6 @@
+rent_range:
+  lower_bound: '30000' # lower limit of rent.
+  upper_bound: '100000' # upper limit of rent.
+city: "台北市" # Either Taipei or New Taipei
+districts: [] #['Beitou District', 'Wenshan District'] # you can put any district name to filter the data or can pass an empty array.
+beds: '2' # can change this value to any numeric value.

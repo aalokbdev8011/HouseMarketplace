@@ -3,7 +3,7 @@
 class PropertiesController < ApplicationController
   before_action :set_property, only: %i[show update destroy]
   before_action :check_admin, only: %i[create update destroy]
-  before_action(:authorize_request, if: ->  {request.headers['Authorization'].present?})
+  before_action(:authorize_request, if: ->  { request.headers['Authorization'].present? })
 
   def index
     page_number = params[:page] || 1

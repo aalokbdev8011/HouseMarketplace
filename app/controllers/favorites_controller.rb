@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class FavoritesController < ApplicationController
-  before_action :check_user, only: %i[index create delete]
+  before_action :check_user, only: %i[index create destroy]
   before_action :check_favorite_property, only: [:create]
+  after_action :update_property, only: [:destroy]
 
   def index
     favorites_list = current_user.favorites.map(&:property)
@@ -34,5 +35,10 @@ class FavoritesController < ApplicationController
   def check_favorite_property
     favorite = Favorite.find_by(property_id: params[:property_id])
     render json: { message: 'This property is already in your favorites list' } if favorite.present?
+  end
+
+  def update_property
+    property = Favorite.find_by(id: params[:id]).property
+    property.update(is_favorite: false)
   end
 end

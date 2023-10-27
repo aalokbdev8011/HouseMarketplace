@@ -20,7 +20,7 @@ RSpec.describe Property, type: :model do
     expect(association.macro).to eq :has_many
   end
 
-  it 'has many attached images' do
-    expect(described_class.new).to respond_to(:images)
+  it 'has one attached images' do
+    expect(described_class.new).to respond_to(:image)
   end
 end

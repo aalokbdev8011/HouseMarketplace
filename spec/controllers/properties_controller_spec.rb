@@ -41,7 +41,7 @@ RSpec.describe PropertiesController, type: :controller do
       it 'returns an error message' do
         sign_in user
         post :create, params: { property: valid_property_params }
-        expect(JSON.parse(response.body)['errors']).to eq('You are not authorised user to perform this action')
+        expect(JSON.parse(response.body)['errors']).to eq('You are not authorised user or logged in to perform this action')
       end
     end
   end
@@ -82,7 +82,7 @@ RSpec.describe PropertiesController, type: :controller do
       it 'returns an error message' do
         sign_in user
         patch :update, params: { id: property.id, property: { title: 'New Title' } }
-        expect(JSON.parse(response.body)['errors']).to eq('You are not authorised user to perform this action')
+        expect(JSON.parse(response.body)['errors']).to eq('You are not authorised user or logged in to perform this action')
       end
     end
   end
@@ -105,7 +105,7 @@ RSpec.describe PropertiesController, type: :controller do
       it 'returns an error message' do
         sign_in user
         delete :destroy, params: { id: property.id }
-        expect(JSON.parse(response.body)['errors']).to eq('You are not authorised user to perform this action')
+        expect(JSON.parse(response.body)['errors']).to eq('You are not authorised user or logged in to perform this action')
       end
     end
   end

@@ -7,7 +7,7 @@ class PropertiesController < ApplicationController
   def index
     page_number = params[:page] || 1
     properties = Property.paginate(page: page_number, per_page: 6)
-    render json: PropertySerializer.new(properties).serializable_hash
+    render json: { properties: PropertySerializer.new(properties, params: {user: current_user}).serializable_hash, items_count: Property.count}
   end
 
   def create

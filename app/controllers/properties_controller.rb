@@ -44,7 +44,7 @@ class PropertiesController < ApplicationController
     properties = filtered_data
 
     if properties.present?
-      render json: PropertySerializer.new(properties.paginate(page: page_number, per_page: 6)).serializable_hash
+      render json: { properties: PropertySerializer.new(properties.paginate(page: page_number, per_page: 6)).serializable_hash, items_count: properties.count }
     else
       render json: { message: 'No Properties found' }
     end

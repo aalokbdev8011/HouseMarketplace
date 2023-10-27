@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class PropertiesController < ApplicationController
+  before_action(:authorize_request, if: ->  { request.headers['Authorization'].present? })
   before_action :set_property, only: %i[show update destroy]
   before_action :check_admin, only: %i[create update destroy]
-  before_action(:authorize_request, if: ->  { request.headers['Authorization'].present? })
 
   def index
     page_number = params[:page] || 1
@@ -14,7 +14,7 @@ class PropertiesController < ApplicationController
 
   def create
     property = Property.new(property_params)
-
+    property.district << params[:district]
     if property.save
       render json: { message: 'Property is successfully created',
                      property: PropertySerializer.new(property).serializable_hash }
@@ -55,8 +55,9 @@ class PropertiesController < ApplicationController
   private
 
   def property_params
-    params.require(:property).permit(:title, :price, :city, :address, :mrt_station, :property_type, :rooms, :district,
-                                     :image)
+    params.require(:property)
+          .permit(:title, :price, :city, :address, :mrt_station, :property_type, :rooms,
+                  :image)
   end
 
   def set_property

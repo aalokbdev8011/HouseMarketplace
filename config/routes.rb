@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :users, path: '', path_names: {
-                                 sign_in: 'login',
-                                 sign_out: 'logout',
-                                 registration: 'signup'
-                               },
-                     controllers: {
+  devise_for :users, defaults: { format: :json }, controllers: {
                        sessions: 'users/sessions',
                        registrations: 'users/registrations'
                      }
@@ -17,5 +12,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :favorites, only: %i[index create]
+  resources :favorites, only: %i[index create destroy]
 end

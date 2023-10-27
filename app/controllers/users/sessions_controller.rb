@@ -1,30 +1,17 @@
 # frozen_string_literal: true
+require './lib/json_web_token.rb'
 
-module Users
-  class SessionsController < Devise::SessionsController
-    respond_to :json
+class Users::SessionsController < Devise::SessionsController
+  before_action :authorize_request, except: :create
 
-    private
-
-    def respond_with(resource, _opts = {})
-      render json: {
-        status: { code: 200, message: 'Logged in sucessfully.' },
-        data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
-      }, status: :ok
-    end
-
-    def respond_to_on_destroy
-      if session.destroy
-        render json: {
-          status: 200,
-          message: 'logged out successfully'
-        }, status: :ok
-      else
-        render json: {
-          status: 401,
-          message: "Couldn't find an active session."
-        }, status: :unauthorized
-      end
+  def create
+    user = User.find_by_email(params[:user][:email])
+    if user&.valid_password?(params[:user][:password])
+      token = JsonWebToken.encode(user_id: user.id)
+      time = 1.day.from_now
+      render json: { token: token, exp: time, id: user.id, email: user.email }, status: :ok
+    else
+      render json: { error: 'unauthorized' }, status: :unauthorized
     end
   end
 end

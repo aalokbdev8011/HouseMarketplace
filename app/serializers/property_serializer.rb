@@ -10,7 +10,6 @@ class PropertySerializer
   end
 
   attribute :is_favorite do |object, params|
-    user = params[:user]
-    user&.favorites&.find_by(property_id: object.id).present?
+    object.favorites.find_by(user_id: params[:user].id).present?
   end
 end

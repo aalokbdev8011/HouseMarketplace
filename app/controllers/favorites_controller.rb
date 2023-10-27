@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class FavoritesController < ApplicationController
+  before_action :authorize_request
+
   before_action :check_user, only: %i[index create destroy]
   before_action :check_favorite_property, only: [:create]
-  after_action :update_property, only: [:destroy]
 
   def index
     favorites_list = current_user.favorites.map(&:property)
@@ -11,17 +12,19 @@ class FavoritesController < ApplicationController
   end
 
   def create
-    favorite = Favorite.new(user_id: current_user.id, property_id: params[:property_id])
-    if favorite.save
-      render json: { message: 'Property is successfully added in your favorites' }
+    favorite = current_user.favorites.where(property_id: params[:property_id]).first
+    if favorite
+      favorite.destroy
+      render json: { message: 'removed' }
     else
-      render json: { message: favorite.errors.full_messages }, status: 422
+      favorite = current_user.favorites.create(property_id: params[:property_id])
+      render json: { message: 'added' }
     end
   end
 
   def destroy
-    favorite = Favorite.find_by(id: params[:id])
-    return unless favorite.destroy
+    @favorite = Favorite.where(property_id: params[:id], user_id: current_user.id).first
+    return unless @favorite.destroy
 
     render json: { message: 'Property is removed in your favorites' }
   end
@@ -38,7 +41,7 @@ class FavoritesController < ApplicationController
   end
 
   def update_property
-    property = Favorite.find_by(id: params[:id]).property
+    property = @favorite.property
     property.update(is_favorite: false)
   end
 end

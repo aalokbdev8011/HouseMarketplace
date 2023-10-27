@@ -3,10 +3,12 @@
 class PropertiesController < ApplicationController
   before_action :set_property, only: %i[show update destroy]
   before_action :check_admin, only: %i[create update destroy]
+  before_action(:authorize_request, if: ->  {request.headers['Authorization'].present?})
 
   def index
     page_number = params[:page] || 1
-    properties = Property.paginate(page: page_number, per_page: 6)
+    properties = Property.order("id desc").paginate(page: page_number, per_page: 6)
+
     render json: { properties: PropertySerializer.new(properties, params: {user: current_user}).serializable_hash, items_count: Property.count}
   end
 

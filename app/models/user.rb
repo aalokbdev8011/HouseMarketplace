@@ -6,7 +6,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :favorites
+  has_many :favorites, dependent: :destroy
 
   enum role: { "user": 0, "admin": 1 }
 end

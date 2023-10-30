@@ -8,7 +8,7 @@ class FavoritesController < ApplicationController
 
   def index
     favorites_list = current_user.favorites.map(&:property)
-    render json: PropertySerializer.new(favorites_list).serializable_hash
+    render json: {properties: PropertySerializer.new(favorites_list).serializable_hash, items_count: favorites_list.count}
   end
 
   def create

@@ -14,7 +14,7 @@ class PropertiesController < ApplicationController
 
   def create
     property = Property.new(property_params)
-    property.district << params[:district]
+
     if property.save
       render json: { message: 'Property is successfully created',
                      property: PropertySerializer.new(property).serializable_hash }
@@ -37,8 +37,7 @@ class PropertiesController < ApplicationController
   end
 
   def destroy
-    @property.destroy
-    render json: { message: 'Property is deleted successfully' }
+    render json: { message: 'Property is deleted successfully' } if @property.destroy
   end
 
   def filter_properties
@@ -56,7 +55,7 @@ class PropertiesController < ApplicationController
 
   def property_params
     params.require(:property)
-          .permit(:title, :price, :city, :address, :mrt_station, :property_type, :rooms,
+          .permit(:title, :price, :city, :address, :mrt_station, :property_type, :rooms, :district,
                   :image)
   end
 

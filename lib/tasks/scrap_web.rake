@@ -13,7 +13,7 @@ namespace :scrap_web do
     end
 
     residential_hashes = data.select { |hash| filtered_data(hash, config) }
-    
+
     residential_hashes.each do |items|
       property = Property.create(
         title: items['title'],
@@ -23,11 +23,12 @@ namespace :scrap_web do
         district: items['dist'],
         rooms: items['total_room'],
         mrt_station: items['road_address'],
-        property_type: items['type']
+        property_type: items['type'],
+        image_url: items['image_watermarked']
 
       )
     end
-     
+
   end
 
   def filtered_data(hash, config)

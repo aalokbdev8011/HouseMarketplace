@@ -43,7 +43,6 @@ class PropertiesController < ApplicationController
   def filter_properties
     page_number = params[:page] || 1
     properties = filtered_data
-
     if properties.present?
       render json: { properties: PropertySerializer.new(properties.paginate(page: page_number, per_page: 6)).serializable_hash, items_count: properties.count }
     else
@@ -71,15 +70,15 @@ class PropertiesController < ApplicationController
   end
 
   def check_price?
-    params[:price_min].present? && params[:price_max].present?
+    params[:priceMin].present? && params[:priceMax].present?
   end
 
   def filtered_data
     properties = Property.all
     properties = properties.where(city: params[:city]) if params[:city].present?
     properties = properties.where(district: params[:district]) if params[:district].present?
-    properties = properties.where(price: params[:price_min].to_d..params[:price_max].to_d) if check_price?
-    properties = properties.where(property_type: params[:property_type]) if params[:property_type].present?
+    properties = properties.where(price: params[:priceMin].to_d..params[:priceMax].to_d) if check_price?
+    properties = properties.where(property_type: params[:propertyType]) if params[:propertyType].present?
     properties
   end
 end

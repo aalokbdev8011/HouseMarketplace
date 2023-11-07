@@ -11,6 +11,6 @@ class Property < ApplicationRecord
   private
 
   def update_image_url
-    self.image_url = self.image.attached? ? Rails.application.routes.url_helpers.rails_blob_url(self.image.blob, only_path: true) : nil
+    self.image_url = self.image.attached? ? Rails.application.routes.url_helpers.rails_blob_url(self.image.blob, only_path: true) : self.image_url
   end
 end

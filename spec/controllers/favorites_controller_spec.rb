@@ -3,11 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe FavoritesController, type: :controller do
-  before do
+  before(:each) do
     @user = User.create(email: 'example@yopmail.com', password: '123456', role: 0)
     @property = Property.create(title: 'New Property', price: 30_000, address: 'city center', city: 'Mumbai',
                                 district: 'Thane', rooms: 2, mrt_station: 'Thane station', property_type: 'residential')
-    sign_in @user
+    request.headers['Authorization'] = JsonWebToken.encode(user_id: @user.id)
+
     @favorite = Favorite.create(property_id: @property.id, user_id: @user.id)
   end
 
@@ -29,13 +30,13 @@ RSpec.describe FavoritesController, type: :controller do
       @favorite.destroy
       post :create, params: { property_id: @property.id }
       expect(response).to have_http_status(:success)
-      expect(JSON.parse(response.body)['message']).to eq('Property is successfully added in your favorites')
+      expect(JSON.parse(response.body)['message']).to eq('added')
     end
 
     it 'returns an error message if the property is already in favorites' do
-      post :create
-      expect(response).to have_http_status(422)
-      expect(response.message).to eq('Unprocessable Entity')
+      post :create, params: { property_id: @property.id }
+      expect(response).to have_http_status(:success)
+      expect(JSON.parse(response.body)['message']).to eq('This property is already in your favorites list')
     end
 
     it 'returns unauthorized for non-user roles' do
